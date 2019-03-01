@@ -68,6 +68,10 @@ class MainWindow(QDialog):
 
 
     def next(self):
+        if self.webcamEnabled == True:
+            self.capture.release()
+            cv.destroyAllWindows()
+            self.webcamEnabled = False
         self.nextButton.setText("Next")
         image_categories = random.sample(self.categories, 2)
         image1_name = random.sample(os.listdir('../data/Images/'+image_categories[0]), 1)
@@ -91,7 +95,7 @@ class MainWindow(QDialog):
             self.b2.setText(label2)
             self.a2.setText(label1)
             self.b1.setText(label1)
-"""
+
         if self.webcamEnabled == False:
             self.webcamEnabled = True
             self.savedir = "../data/"+self.user
@@ -99,12 +103,14 @@ class MainWindow(QDialog):
                 os.makedirs(self.savedir)
             fourcc = cv.VideoWriter_fourcc('X','V','I','D')
             self.outputfile = self.savedir+ "/" +image_categories[0]+"+" + image_categories[1] + ".avi"
-            out = cv.VideoWriter(self.outputfile, fourcc, 30.0, (640,480))
+            self.out = cv.VideoWriter(self.outputfile, fourcc, 30.0, (640,480))
             self.capture = cv.VideoCapture(0)
             self.capture.set(cv.CAP_PROP_FRAME_WIDTH, 640)
             self.capture.set(cv.CAP_PROP_FRAME_HEIGHT, 480)
             self.timer = QTimer(self)
+            #self.timer.timeout
             self.timer.timeout.connect(self.updateFrame)
+            self.timer.start(16);
 
 
     def updateFrame(self):
@@ -116,17 +122,7 @@ class MainWindow(QDialog):
         else:
             self.stopWebcam()
             QMessageBox.critical(self, 'Error', "Error opening webcam", QMessageBox.Ok)
-"""
     
-
-         
-
-
-
-    
-        
-
-
 
 app = QApplication(sys.argv)
 loginWindow = Login()
@@ -138,3 +134,4 @@ if loginWindow.exec_() == QDialog.Accepted:
     window = MainWindow(userName)
     window.show()
     sys.exit(app.exec_())
+
