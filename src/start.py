@@ -46,18 +46,22 @@ class MainWindow(QDialog):
         self.nextButton.clicked.connect(self.next)
         self.submitButton.clicked.connect(self.submit)
         self.submitButton.setEnabled(False)
+        self.timer = QTimer(self)
+        #self.timer.timeout
+        self.timer.timeout.connect(self.updateFrame)
     
     def quit(self):
-        self.webcamEnabled = False
+        if self.webcamEnabled == True:
+            self.stopWebCam()
         
         result = QMessageBox.question(self, 'Message', "Are you sure?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if result == QMessageBox.Yes:
             self.pic1.clear()
             self.pic2.clear()
-            self.close()
+            #self.close()
+            sys.exit(0)
         else:
             self.webcamEnabled = True
-
 
 
     def submit(self):
@@ -69,9 +73,7 @@ class MainWindow(QDialog):
 
     def next(self):
         if self.webcamEnabled == True:
-            self.capture.release()
-            cv.destroyAllWindows()
-            self.webcamEnabled = False
+            self.stopWebCam()
         self.nextButton.setText("Next")
         image_categories = random.sample(self.categories, 2)
         image1_name = random.sample(os.listdir('../data/Images/'+image_categories[0]), 1)
@@ -98,7 +100,7 @@ class MainWindow(QDialog):
 
         if self.webcamEnabled == False:
             self.webcamEnabled = True
-            self.savedir = "../data/"+self.user
+            self.savedir = "../userdata/videos/"+self.user
             if not os.path.exists(self.savedir):
                 os.makedirs(self.savedir)
             fourcc = cv.VideoWriter_fourcc('X','V','I','D')
@@ -107,9 +109,6 @@ class MainWindow(QDialog):
             self.capture = cv.VideoCapture(0)
             self.capture.set(cv.CAP_PROP_FRAME_WIDTH, 640)
             self.capture.set(cv.CAP_PROP_FRAME_HEIGHT, 480)
-            self.timer = QTimer(self)
-            #self.timer.timeout
-            self.timer.timeout.connect(self.updateFrame)
             self.timer.start(16);
 
 
@@ -120,9 +119,16 @@ class MainWindow(QDialog):
             image = cv.flip(image,1)
             self.out.write(image)
         else:
-            self.stopWebcam()
-            QMessageBox.critical(self, 'Error', "Error opening webcam", QMessageBox.Ok)
-    
+            self.stopWebCam()
+            QMessageBox.information(self, 'Info', "Error opening webcam", QMessageBox.Ok)
+            self.quit()
+            
+    def stopWebCam(self):
+        self.timer.stop()
+        self.capture.release()
+        cv.destroyAllWindows()
+        self.webcamEnabled = False
+            
 
 app = QApplication(sys.argv)
 loginWindow = Login()
@@ -134,4 +140,5 @@ if loginWindow.exec_() == QDialog.Accepted:
     window = MainWindow(userName)
     window.show()
     sys.exit(app.exec_())
+
 
