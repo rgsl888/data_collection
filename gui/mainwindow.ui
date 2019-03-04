@@ -13,11 +13,35 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>40</y>
+      <width>411</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>15</pointsize>
+     </font>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+  </widget>
   <widget class="QLabel" name="pic1">
    <property name="geometry">
     <rect>
      <x>130</x>
-     <y>90</y>
+     <y>110</y>
      <width>461</width>
      <height>511</height>
     </rect>
@@ -39,7 +63,7 @@
    <property name="geometry">
     <rect>
      <x>610</x>
-     <y>90</y>
+     <y>110</y>
      <width>461</width>
      <height>511</height>
     </rect>
@@ -61,7 +85,7 @@
    <property name="geometry">
     <rect>
      <x>129</x>
-     <y>610</y>
+     <y>640</y>
      <width>941</width>
      <height>101</height>
     </rect>
@@ -72,13 +96,13 @@
     </font>
    </property>
    <property name="title">
-    <string>Answer</string>
+    <string>Choose</string>
    </property>
    <widget class="QRadioButton" name="ans1">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>20</y>
+      <x>220</x>
+      <y>30</y>
       <width>16</width>
       <height>21</height>
      </rect>
@@ -93,8 +117,8 @@
    <widget class="QRadioButton" name="ans2">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>65</y>
+      <x>710</x>
+      <y>30</y>
       <width>16</width>
       <height>21</height>
      </rect>
@@ -106,108 +130,12 @@
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QLabel" name="a1">
-    <property name="geometry">
-     <rect>
-      <x>130</x>
-      <y>20</y>
-      <width>211</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>15</pointsize>
-     </font>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="a2">
-    <property name="geometry">
-     <rect>
-      <x>130</x>
-      <y>60</y>
-      <width>211</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>15</pointsize>
-     </font>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="b2">
-    <property name="geometry">
-     <rect>
-      <x>630</x>
-      <y>60</y>
-      <width>211</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>15</pointsize>
-     </font>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="b1">
-    <property name="geometry">
-     <rect>
-      <x>630</x>
-      <y>20</y>
-      <width>211</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>15</pointsize>
-     </font>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
   </widget>
   <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
      <x>130</x>
-     <y>62</y>
+     <y>80</y>
      <width>461</width>
      <height>21</height>
     </rect>
@@ -225,7 +153,7 @@
    <property name="geometry">
     <rect>
      <x>610</x>
-     <y>60</y>
+     <y>80</y>
      <width>461</width>
      <height>21</height>
     </rect>
@@ -243,7 +171,7 @@
    <property name="geometry">
     <rect>
      <x>510</x>
-     <y>760</y>
+     <y>800</y>
      <width>75</width>
      <height>23</height>
     </rect>
@@ -261,7 +189,7 @@
    <property name="geometry">
     <rect>
      <x>560</x>
-     <y>720</y>
+     <y>760</y>
      <width>75</width>
      <height>23</height>
     </rect>
@@ -279,7 +207,7 @@
    <property name="geometry">
     <rect>
      <x>610</x>
-     <y>760</y>
+     <y>800</y>
      <width>75</width>
      <height>23</height>
     </rect>
