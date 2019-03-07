@@ -41,18 +41,22 @@ class MainWindow(QDialog):
         self.exitButton.clicked.connect(self.quit)
         self.webcamEnabled = False
 
-        self.categories = [x for x in os.listdir('../data/Images')]
+        self.easy_categories = [x for x in os.listdir('../data/easy/')]
+        self.hard_categories = [x for x in os.listdir('../data/hard/')]
         self.nextButton.clicked.connect(self.next)
         self.submitButton.clicked.connect(self.submit)
         self.submitButton.setEnabled(False)
         self.timer = QTimer(self)
         #self.timer.timeout
         self.timer.timeout.connect(self.updateFrame)
-        self.data_path = "../userdata/data.csv"
-        if not os.path.exists(self.data_path): 
-            self.data = pd.DataFrame(
+        self.userdata_path = "../userdata/data.csv"
+        if not os.path.exists(self.userdata_path): 
+            self.userdata = pd.DataFrame(
                 {
                     "username"  : [],
+                    "level"     : [],
+                    "image1"    : [],
+                    "image2"    : [],
                     "label1"    : [],
                     "label2"    : [],
                     "true_label": [],
@@ -62,14 +66,30 @@ class MainWindow(QDialog):
                 }
             ) 
         else:
-           self.data = pd.read_csv (self.data_path); 
+           self.userdata = pd.read_csv (self.userdata_path); 
         self.started = False
+
+        self.userdata_temp = pd.DataFrame(
+            {
+                "username"  : [],
+                "level"     : [],
+                "image1"    : [],
+                "image2"    : [],
+                "label1"    : [], 
+                "label2"    : [], 
+                "true_label": [], 
+                "user_choice"   : [],
+                "session_video" : []
+                
+            }
+        )
     
     def quit(self):
         if self.webcamEnabled == True:
             self.stopWebCam()
 
-        self.data.to_csv (self.data_path, index=False)
+        self.userdata=self.userdata.append(self.userdata_temp, ignore_index=True, sort=False)
+        self.userdata.to_csv (self.userdata_path, index=False)
         
         result = QMessageBox.question(self, 'Message', "Are you sure?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if result == QMessageBox.Yes:
@@ -99,23 +119,41 @@ class MainWindow(QDialog):
             elif((self.ans2.isChecked ()) and (self.ans == 2)):
                 correct_choice = 1
 
-            self.data=self.data.append(pd.DataFrame ([[self.user, self.label1, self.label2, self.true_label, correct_choice, self.output_filename]], columns=['username', 'label1', 'label2', 'true_label', 'user_choice', 'session_video']), ignore_index=True, sort=False)
+            self.userdata_temp=self.userdata_temp.append(pd.DataFrame ([[self.user, self.level, self.image1_path, self.image2_path, self.label1, self.label2, self.true_label, correct_choice, self.outputfile]], columns=['username', 'level', 'image1', 'image2', 'label1', 'label2', 'true_label', 'user_choice', 'session_video']), ignore_index=True, sort=False)
             
             
         if self.webcamEnabled == True:
             self.stopWebCam()
         self.nextButton.setText("Next")
-        image_categories = random.sample(self.categories, 2)
-        image1_name = random.sample(os.listdir('../data/Images/'+image_categories[0]), 1)
-        image2_name = random.sample(os.listdir('../data/Images/'+image_categories[1]), 1)
+        category = ''
+        random_state = 2 #  0 - Easy, 1-Hard and 2-Disabled
+        if (self.rand.isChecked()):
+            random_state = random.randint(0,1)
+            
+        if ((self.easy.isChecked()) or (random_state == 0)):
+            data_path = "../data/easy/"
+            self.level = 'E'
+            image_categories = random.sample(self.easy_categories, 2)
+        elif ((self.hard.isChecked()) or (random_state == 1)):
+            data_path = "../data/hard/"
+            self.level = 'H'
+            main_category = random.sample(self.hard_categories, 1)
+            category = main_category[0]
+            sub_categories = [x for x in os.listdir(data_path+main_category[0]+'/')]
+            image_categories = random.sample(sub_categories, 2)
 
-        image1 = QPixmap('../data/Images/'+image_categories[0]+'/'+image1_name[0])
-        image2 = QPixmap('../data/Images/'+image_categories[1]+'/'+image2_name[0])
+        image1_name = random.sample(os.listdir(data_path+category+'/'+image_categories[0]), 1)
+        image2_name = random.sample(os.listdir(data_path+category+'/'+image_categories[1]), 1)
+
+        self.image1_path = data_path+category+'/'+image_categories[0]+'/'+image1_name[0] 
+        self.image2_path = data_path+category+'/'+image_categories[1]+'/'+image2_name[0]
+        image1 = QPixmap(self.image1_path)
+        image2 = QPixmap(self.image2_path)
         self.pic1.setPixmap(image1)
         self.pic2.setPixmap(image2)
 
-        self.label1 = image_categories[0][10:].replace('_',' ')
-        self.label2 = image_categories[1][10:].replace('_',' ')
+        self.label1 = image_categories[0][10:].replace('-',' ')
+        self.label2 = image_categories[1][10:].replace('-',' ')
 
         if random.randint(0,1):
             self.label.setText("LABEL : " + self.label1)

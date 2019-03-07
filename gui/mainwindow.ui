@@ -37,11 +37,74 @@
      <set>Qt::AlignCenter</set>
     </property>
   </widget>
+  <widget class="QRadioButton" name="easy">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>90</y>
+      <width>100</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Easy</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
+  </widget>
+  <widget class="QRadioButton" name="hard">
+    <property name="geometry">
+     <rect>
+      <x>560</x>
+      <y>90</y>
+      <width>100</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Hard</string>
+    </property>
+    <property name="checked">
+     <bool>false</bool>
+    </property>
+  </widget>
+  <widget class="QRadioButton" name="rand">
+    <property name="geometry">
+     <rect>
+      <x>670</x>
+      <y>90</y>
+      <width>100</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Random</string>
+    </property>
+    <property name="checked">
+     <bool>false</bool>
+    </property>
+  </widget>
   <widget class="QLabel" name="pic1">
    <property name="geometry">
     <rect>
      <x>130</x>
-     <y>110</y>
+     <y>150</y>
      <width>461</width>
      <height>511</height>
     </rect>
@@ -63,7 +126,7 @@
    <property name="geometry">
     <rect>
      <x>610</x>
-     <y>110</y>
+     <y>150</y>
      <width>461</width>
      <height>511</height>
     </rect>
@@ -85,7 +148,7 @@
    <property name="geometry">
     <rect>
      <x>129</x>
-     <y>640</y>
+     <y>680</y>
      <width>941</width>
      <height>101</height>
     </rect>
@@ -107,9 +170,14 @@
       <height>21</height>
      </rect>
     </property>
-    <property name="text">
-     <string/>
-    </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
     <property name="checked">
      <bool>true</bool>
     </property>
@@ -135,7 +203,7 @@
    <property name="geometry">
     <rect>
      <x>130</x>
-     <y>80</y>
+     <y>130</y>
      <width>461</width>
      <height>21</height>
     </rect>
@@ -153,7 +221,7 @@
    <property name="geometry">
     <rect>
      <x>610</x>
-     <y>80</y>
+     <y>130</y>
      <width>461</width>
      <height>21</height>
     </rect>
