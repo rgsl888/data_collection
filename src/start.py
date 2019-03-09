@@ -10,8 +10,13 @@ import time
 
 from PyQt5.QtWidgets import QApplication, QDialog, QMessageBox
 from PyQt5.uic import loadUi
-from PyQt5.QtCore import QCoreApplication, QTimer, QUrl, QDateTime
+from PyQt5.QtCore import QCoreApplication, QTimer, QUrl, QDateTime, Qt, QFileInfo
 from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer
+from PyQt5.QtMultimediaWidgets import QVideoWidget
+from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets import (QApplication, QFileDialog, QHBoxLayout, QLabel,
+        QPushButton, QSizePolicy, QSlider, QStyle, QVBoxLayout, QWidget)
 
 userName = ""
 
@@ -44,8 +49,8 @@ class MainWindow(QDialog):
         self.easy_categories = [x for x in os.listdir('../data/easy/')]
         self.hard_categories = [x for x in os.listdir('../data/hard/')]
         self.nextButton.clicked.connect(self.next)
-        self.submitButton.clicked.connect(self.submit)
-        self.submitButton.setEnabled(False)
+        self.playback.clicked.connect(self.play)
+        self.playback.setEnabled(False)
         self.timer = QTimer(self)
         #self.timer.timeout
         self.timer.timeout.connect(self.updateFrame)
@@ -85,14 +90,10 @@ class MainWindow(QDialog):
         )
     
     def quit(self):
-        if self.webcamEnabled == True:
-            self.stopWebCam()
-
-        self.userdata=self.userdata.append(self.userdata_temp, ignore_index=True, sort=False)
-        self.userdata.to_csv (self.userdata_path, index=False)
         
         result = QMessageBox.question(self, 'Message', "Are you sure?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if result == QMessageBox.Yes:
+            self.save()
             self.pic1.clear()
             self.pic2.clear()
             #self.close()
@@ -100,9 +101,15 @@ class MainWindow(QDialog):
         else:
             self.webcamEnabled = True
 
+    def save(self):
+        if self.webcamEnabled == True:
+            self.stopWebCam()
+
+        self.userdata=self.userdata.append(self.userdata_temp, ignore_index=True, sort=False)
+        self.userdata.to_csv (self.userdata_path, index=False)
 
     def submit(self):
-        self.submitButton.setEnabled(False)
+        self.playback.setEnabled(False)
         self.nextButton.setText("Start")
         self.pic1.clear()
         self.pic2.clear()
@@ -112,6 +119,7 @@ class MainWindow(QDialog):
         if self.started == False:
             self.started = True
         else:
+            self.playback.setEnabled(True)
             correct_choice = 0
             if ((self.ans1.isChecked ()) and (self.ans == 1)):
                 correct_choice = 1
@@ -196,7 +204,118 @@ class MainWindow(QDialog):
         self.capture.release()
         cv.destroyAllWindows()
         self.webcamEnabled = False
-            
+
+    def play(self):
+        self.save()
+        self.accept()
+        
+
+class PlayBackWindow(QDialog):
+
+    def __init__ (self, userdata):
+        super(PlayBackWindow, self).__init__()
+        loadUi('../gui/playback.ui', self)
+        self.setWindowTitle("Playback")
+        self.userdata = userdata
+        self.mediaPlayer = QMediaPlayer(None, QMediaPlayer.VideoSurface)
+        videoWidget = QVideoWidget()
+
+        self.playButton.setEnabled(True)
+        self.playButton.setIcon(self.style().standardIcon(QStyle.SP_MediaPlay))
+        self.playButton.clicked.connect(self.play)
+        self.positionSlider = QSlider(Qt.Horizontal)
+        self.positionSlider.setRange(0, 0)
+        self.positionSlider.sliderMoved.connect(self.setPosition)
+
+        self.errorLabel = QLabel()
+        self.errorLabel.setSizePolicy(QSizePolicy.Preferred,
+                QSizePolicy.Maximum)
+
+        controlLayout = QHBoxLayout()
+        controlLayout.setContentsMargins(0, 0, 0, 0)
+        controlLayout.addWidget(self.playButton)
+        controlLayout.addWidget(self.positionSlider)
+
+        wid = QWidget(self)
+  
+        layout = QVBoxLayout()
+        layout.addWidget(videoWidget)
+        layout.addLayout(controlLayout)
+        layout.addWidget(self.errorLabel)
+
+        wid.setLayout(layout)
+
+        self.mediaPlayer.setVideoOutput(videoWidget)
+        self.mediaPlayer.stateChanged.connect(self.mediaStateChanged)
+        self.mediaPlayer.positionChanged.connect(self.positionChanged)
+        self.mediaPlayer.durationChanged.connect(self.durationChanged)
+        self.mediaPlayer.error.connect(self.handleError)
+
+        wid.setGeometry (100, 20, 0, 0)
+        wid.resize(400,400)
+        #fileName = "../userdata/videos/rgsl888/20190308_184703.avi"
+        #self.mediaPlayer.setMedia( QMediaContent(QUrl.fromLocalFile(QFileInfo(fileName).absoluteFilePath())))
+        self.nextButton.setText("Start")
+        self.nextButton.clicked.connect(self.next)
+        self.exitButton.clicked.connect(self.exitCall)
+        self.count = 0
+       
+    def next(self):
+        self.nextButton.setText("Next")
+        if (self.userdata.shape[0] <= self.count):
+            QMessageBox.information(self, 'Info', "All the sessions has been already shown, please exit", QMessageBox.Ok)
+        else: 
+            self.mediaPlayer.setMedia(QMediaContent(QUrl.fromLocalFile(QFileInfo(self.userdata['session_video'][self.count]).absoluteFilePath())))
+            image1 = QPixmap(self.userdata['image1'][self.count])
+            image2 = QPixmap(self.userdata['image2'][self.count])
+            self.pic1.setPixmap(image1)
+            self.pic2.setPixmap(image2)
+            self.label1.setText(self.userdata['label1'][self.count])
+            self.label2.setText(self.userdata['label2'][self.count])
+            self.trueLabel.setText('Label Provided: ' + self.userdata['true_label'][self.count])
+            if (self.userdata['level'][self.count] == 'E'):
+                lvl = 'Easy'
+            else:
+                lvl = 'Hard'
+            self.level.setText('Level: ' + lvl)
+            if (self.userdata['user_choice'][self.count] == 0):
+                ans = 'Wrong'
+            else:
+                ans = 'Correct'
+            self.answer.setText('User choice: ' + ans)
+            self.count = self.count + 1 
+        
+    def exitCall(self):
+        result = QMessageBox.question(self, 'Message', "Are you sure?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        if result == QMessageBox.Yes:
+            sys.exit(0)
+
+    def play(self):
+        if self.mediaPlayer.state() == QMediaPlayer.PlayingState:
+            self.mediaPlayer.pause()
+        else:
+            self.mediaPlayer.play()
+
+    def mediaStateChanged(self, state):
+        if self.mediaPlayer.state() == QMediaPlayer.PlayingState:
+            self.playButton.setIcon(
+                    self.style().standardIcon(QStyle.SP_MediaPause))
+        else:
+            self.playButton.setIcon(
+                    self.style().standardIcon(QStyle.SP_MediaPlay))
+
+    def positionChanged(self, position):
+        self.positionSlider.setValue(position)
+
+    def durationChanged(self, duration):
+        self.positionSlider.setRange(0, duration)
+
+    def setPosition(self, position):
+        self.mediaPlayer.setPosition(position)
+
+    def handleError(self):
+        self.playButton.setEnabled(False)
+        self.errorLabel.setText("Error: " + self.mediaPlayer.errorString())
 
 app = QApplication(sys.argv)
 loginWindow = Login()
@@ -207,6 +326,9 @@ loginWindow.show()
 if loginWindow.exec_() == QDialog.Accepted:
     window = MainWindow(userName)
     window.show()
+    if window.exec_() == QDialog.Accepted:
+        player = PlayBackWindow(window.userdata_temp)
+        player.show()
     sys.exit(app.exec_())
 
 

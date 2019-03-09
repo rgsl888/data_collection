@@ -235,7 +235,7 @@
     <string>Picture 2</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="submitButton">
+  <widget class="QPushButton" name="playback">
    <property name="geometry">
     <rect>
      <x>510</x>
@@ -250,7 +250,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Submit</string>
+    <string>Playback</string>
    </property>
   </widget>
   <widget class="QPushButton" name="nextButton">
