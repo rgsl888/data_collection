@@ -40,7 +40,7 @@
   <widget class="QRadioButton" name="easy">
    <property name="geometry">
     <rect>
-     <x>450</x>
+     <x>390</x>
      <y>90</y>
      <width>100</width>
      <height>21</height>
@@ -56,7 +56,7 @@
    </property>
    <property name="iconSize">
     <size>
-     <width>32</width>
+     <width>50</width>
      <height>32</height>
     </size>
    </property>
@@ -88,7 +88,7 @@
   <widget class="QRadioButton" name="rand">
    <property name="geometry">
     <rect>
-     <x>670</x>
+     <x>730</x>
      <y>90</y>
      <width>100</width>
      <height>21</height>
@@ -228,10 +228,6 @@
      <bool>true</bool>
     </property>
    </widget>
-   <zorder>ans1</zorder>
-   <zorder>ans2</zorder>
-   <zorder>nextButton</zorder>
-   <zorder>nextButton</zorder>
   </widget>
   <widget class="QLabel" name="label_3">
    <property name="geometry">

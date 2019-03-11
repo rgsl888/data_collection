@@ -51,6 +51,9 @@ class MainWindow(QDialog):
         self.nextButton.clicked.connect(self.next)
         self.playback.clicked.connect(self.play)
         self.playback.setEnabled(False)
+        self.easy.setStyleSheet('QRadioButton::indicator { width: 25px; height: 25px;};')
+        self.hard.setStyleSheet('QRadioButton::indicator { width: 25px; height: 25px;};')
+        self.rand.setStyleSheet('QRadioButton::indicator { width: 25px; height: 25px;};')
         self.timer = QTimer(self)
         #self.timer.timeout
         self.timer.timeout.connect(self.updateFrame)
