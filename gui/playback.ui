@@ -16,40 +16,55 @@
   <widget class="QPushButton" name="nextButton">
    <property name="geometry">
     <rect>
-     <x>460</x>
-     <y>740</y>
-     <width>121</width>
-     <height>27</height>
+     <x>450</x>
+     <y>750</y>
+     <width>150</width>
+     <height>30</height>
     </rect>
    </property>
    <property name="text">
     <string>Next</string>
+   </property>
+   <property name="default">
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QPushButton" name="exitButton">
    <property name="geometry">
     <rect>
      <x>270</x>
-     <y>740</y>
-     <width>107</width>
-     <height>27</height>
+     <y>750</y>
+     <width>150</width>
+     <height>30</height>
     </rect>
    </property>
    <property name="text">
     <string>Exit</string>
    </property>
+   <property name="default">
+    <bool>true</bool>
+   </property>
   </widget>
   <widget class="QPushButton" name="playButton">
    <property name="geometry">
     <rect>
-     <x>230</x>
+     <x>190</x>
      <y>360</y>
-     <width>85</width>
-     <height>27</height>
+     <width>150</width>
+     <height>30</height>
     </rect>
    </property>
    <property name="text">
     <string>Play</string>
+   </property>
+   <property name="autoDefault">
+    <bool>false</bool>
+   </property>
+   <property name="default">
+    <bool>true</bool>
+   </property>
+   <property name="flat">
+    <bool>false</bool>
    </property>
   </widget>
   <widget class="QLabel" name="pic1">
@@ -142,7 +157,7 @@
    <property name="geometry">
     <rect>
      <x>550</x>
-     <y>60</y>
+     <y>170</y>
      <width>300</width>
      <height>25</height>
     </rect>
@@ -163,7 +178,7 @@
    <property name="geometry">
     <rect>
      <x>550</x>
-     <y>130</y>
+     <y>240</y>
      <width>200</width>
      <height>25</height>
     </rect>
@@ -184,7 +199,7 @@
    <property name="geometry">
     <rect>
      <x>550</x>
-     <y>180</y>
+     <y>290</y>
      <width>200</width>
      <height>25</height>
     </rect>

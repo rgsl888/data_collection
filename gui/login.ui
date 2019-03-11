@@ -72,10 +72,10 @@
   <widget class="QPushButton" name="okButton">
    <property name="geometry">
     <rect>
-     <x>230</x>
+     <x>190</x>
      <y>350</y>
-     <width>75</width>
-     <height>23</height>
+     <width>125</width>
+     <height>30</height>
     </rect>
    </property>
    <property name="font">
@@ -84,7 +84,7 @@
     </font>
    </property>
    <property name="text">
-    <string>OK</string>
+    <string>Login</string>
    </property>
   </widget>
   <widget class="QPushButton" name="exitButton">
@@ -92,8 +92,8 @@
     <rect>
      <x>320</x>
      <y>350</y>
-     <width>75</width>
-     <height>23</height>
+     <width>125</width>
+     <height>30</height>
     </rect>
    </property>
    <property name="font">
@@ -102,7 +102,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Exit</string>
+    <string>Quit</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_2">
@@ -125,8 +125,6 @@
    </property>
   </widget>
  </widget>
- <resources>
-  <include location="resource.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
