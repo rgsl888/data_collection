@@ -7,10 +7,9 @@ import random
 import pandas as pd
 import time
 
-
 from PyQt5.QtWidgets import QApplication, QDialog, QMessageBox
 from PyQt5.uic import loadUi
-from PyQt5.QtCore import QCoreApplication, QTimer, QUrl, QDateTime, Qt, QFileInfo
+from PyQt5.QtCore import QCoreApplication, QTimer, QUrl, QDateTime, Qt, QFileInfo, QSize
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer
 from PyQt5.QtMultimediaWidgets import QVideoWidget
@@ -51,9 +50,15 @@ class MainWindow(QDialog):
         self.nextButton.clicked.connect(self.next)
         self.playback.clicked.connect(self.play)
         self.playback.setEnabled(False)
-        self.easy.setStyleSheet('QRadioButton::indicator { width: 25px; height: 25px;};')
-        self.hard.setStyleSheet('QRadioButton::indicator { width: 25px; height: 25px;};')
-        self.rand.setStyleSheet('QRadioButton::indicator { width: 25px; height: 25px;};')
+        self.easy.setStyleSheet('QRadioButton.indicator { width: 25px; height: 25px;};')
+        self.hard.setStyleSheet('QRadioButton.indicator { width: 25px; height: 25px;};')
+        self.rand.setStyleSheet('QRadioButton.indicator { width: 25px; height: 25px;};')
+        self.ans1.setIconSize(QSize(461, 511))
+        self.ans2.setIconSize(QSize(461, 511))
+        self.ans1.setIcon(QIcon(QPixmap("../data/Images/sample1.png").scaled(461, 511, Qt.IgnoreAspectRatio, Qt.SmoothTransformation)))
+        self.ans2.setIcon(QIcon(QPixmap("../data/Images/sample2.png").scaled(461, 511, Qt.IgnoreAspectRatio, Qt.SmoothTransformation)))
+        #self.ans1.setIcon(QIcon(QPixmap("../data/Images/sample1.png").scaledToWidth(461)))
+        #self.ans2.setIcon(QIcon(QPixmap("../data/Images/sample2.png").scaledToWidth(461)))
         self.timer = QTimer(self)
         #self.timer.timeout
         self.timer.timeout.connect(self.updateFrame)
@@ -97,8 +102,6 @@ class MainWindow(QDialog):
         result = QMessageBox.question(self, 'Message', "Are you sure?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if result == QMessageBox.Yes:
             self.save()
-            self.pic1.clear()
-            self.pic2.clear()
             #self.close()
             sys.exit(0)
         else:
@@ -114,8 +117,6 @@ class MainWindow(QDialog):
     def submit(self):
         self.playback.setEnabled(False)
         self.nextButton.setText("Start")
-        self.pic1.clear()
-        self.pic2.clear()
 
 
     def next(self):
@@ -160,8 +161,15 @@ class MainWindow(QDialog):
         self.image2_path = data_path+category+'/'+image_categories[1]+'/'+image2_name[0]
         image1 = QPixmap(self.image1_path)
         image2 = QPixmap(self.image2_path)
-        self.pic1.setPixmap(image1)
-        self.pic2.setPixmap(image2)
+        self.ans1.setIcon(QIcon(QPixmap(self.image1_path).scaled(QSize(461, 511), Qt.IgnoreAspectRatio, Qt.SmoothTransformation)))
+        self.ans2.setIcon(QIcon(QPixmap(self.image2_path).scaled(QSize(461, 511), Qt.IgnoreAspectRatio, Qt.SmoothTransformation)))
+        #self.ans1.setIcon(QIcon(QPixmap(self.image1_path).scaledToWidth(461)))
+        #self.ans2.setIcon(QIcon(QPixmap(self.image2_path).scaledToWidth(461)))
+        #self.ans1.setStyleSheet('QRadioButton.indicator { width: 461px; height: 511px;};')
+        #self.ans2.setStyleSheet('QRadioButton.indicator { width: 461px; height: 511px;};')
+       
+        #self.ans1.setStyleSheet("background-image: url("+ self.image1_path  +");")
+        #self.ans2.setStyleSheet("background-image: url("+ self.image2_path  +");")
 
         self.label1 = image_categories[0][10:].replace('-',' ')
         self.label2 = image_categories[1][10:].replace('-',' ')

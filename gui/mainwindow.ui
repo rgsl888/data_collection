@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1100</width>
-    <height>850</height>
+    <width>1154</width>
+    <height>807</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -106,57 +106,13 @@
     <bool>false</bool>
    </property>
   </widget>
-  <widget class="QLabel" name="pic1">
-   <property name="geometry">
-    <rect>
-     <x>130</x>
-     <y>150</y>
-     <width>461</width>
-     <height>511</height>
-    </rect>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::Box</enum>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="scaledContents">
-    <bool>true</bool>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-  </widget>
-  <widget class="QLabel" name="pic2">
-   <property name="geometry">
-    <rect>
-     <x>610</x>
-     <y>150</y>
-     <width>461</width>
-     <height>511</height>
-    </rect>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::Box</enum>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="scaledContents">
-    <bool>true</bool>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-  </widget>
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
-     <x>129</x>
-     <y>680</y>
-     <width>941</width>
-     <height>101</height>
+     <x>20</x>
+     <y>170</y>
+     <width>1091</width>
+     <height>391</height>
     </rect>
    </property>
    <property name="font">
@@ -165,15 +121,15 @@
     </font>
    </property>
    <property name="title">
-    <string>Choose</string>
+    <string/>
    </property>
    <widget class="QRadioButton" name="ans1">
     <property name="geometry">
      <rect>
-      <x>220</x>
-      <y>30</y>
-      <width>16</width>
-      <height>21</height>
+      <x>80</x>
+      <y>0</y>
+      <width>461</width>
+      <height>391</height>
      </rect>
     </property>
     <property name="font">
@@ -181,21 +137,27 @@
       <pointsize>10</pointsize>
      </font>
     </property>
+    <property name="autoFillBackground">
+     <bool>true</bool>
+    </property>
     <property name="text">
      <string/>
     </property>
     <property name="checked">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
    </widget>
    <widget class="QRadioButton" name="ans2">
     <property name="geometry">
      <rect>
-      <x>710</x>
-      <y>30</y>
-      <width>16</width>
-      <height>21</height>
+      <x>560</x>
+      <y>0</y>
+      <width>461</width>
+      <height>391</height>
      </rect>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
     </property>
     <property name="text">
      <string/>
@@ -204,30 +166,30 @@
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QPushButton" name="nextButton">
-    <property name="geometry">
-     <rect>
-      <x>370</x>
-      <y>50</y>
-      <width>200</width>
-      <height>50</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>10</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Start</string>
-    </property>
-    <property name="autoDefault">
-     <bool>false</bool>
-    </property>
-    <property name="default">
-     <bool>true</bool>
-    </property>
-   </widget>
+  </widget>
+  <widget class="QPushButton" name="nextButton">
+   <property name="geometry">
+    <rect>
+     <x>500</x>
+     <y>660</y>
+     <width>200</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Start</string>
+   </property>
+   <property name="autoDefault">
+    <bool>false</bool>
+   </property>
+   <property name="default">
+    <bool>true</bool>
+   </property>
   </widget>
   <widget class="QLabel" name="label_3">
    <property name="geometry">
@@ -269,7 +231,7 @@
    <property name="geometry">
     <rect>
      <x>440</x>
-     <y>790</y>
+     <y>740</y>
      <width>150</width>
      <height>40</height>
     </rect>
@@ -287,7 +249,7 @@
    <property name="geometry">
     <rect>
      <x>610</x>
-     <y>790</y>
+     <y>740</y>
      <width>150</width>
      <height>40</height>
     </rect>
