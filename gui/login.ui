@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>640</width>
-    <height>408</height>
+    <height>406</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -61,8 +61,8 @@
    <widget class="QLineEdit" name="userName">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>40</y>
+      <x>0</x>
+      <y>30</y>
       <width>331</width>
       <height>20</height>
      </rect>
@@ -122,6 +122,24 @@
    </property>
    <property name="scaledContents">
     <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="tryaga">
+   <property name="geometry">
+    <rect>
+     <x>490</x>
+     <y>260</y>
+     <width>125</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Try Again</string>
    </property>
   </widget>
  </widget>

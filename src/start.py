@@ -17,6 +17,9 @@ from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtWidgets import (QApplication, QFileDialog, QHBoxLayout, QLabel,
         QPushButton, QSizePolicy, QSlider, QStyle, QVBoxLayout, QWidget)
 
+import utils.FaceDetection as fd
+import utils.GenFeature as genfeat
+
 userName = ""
 
 
@@ -25,12 +28,23 @@ class Login(QDialog):
         super(Login, self).__init__()
         loadUi('../gui/login.ui', self)
         self.okButton.clicked.connect(self.login)
+        self.tryaga.clicked.connect(self.tryagain)
         self.exitButton.clicked.connect(QCoreApplication.instance().quit)
+        self.label, self.image = fd.face_recon() 
+        self.userName.setText (self.label)
     
     def login(self):
         global userName
         userName = self.userName.text()
+        if ((self.label == "Unknown") or (self.label != userName)):
+            cv.imwrite("../userdata/userimages/"+userName+".jpg", self.image)
+            genfeat.generate_features()
+            
         self.accept()
+
+    def tryagain(self):
+        self.label, image = fd.face_recon()
+        self.userName.setText (self.label)
 
 
 class MainWindow(QDialog):
@@ -111,7 +125,7 @@ class MainWindow(QDialog):
         if self.webcamEnabled == True:
             self.stopWebCam()
 
-        self.userdata=self.userdata.append(self.userdata_temp, ignore_index=True, sort=False)
+        self.userdata=self.userdata.append(self.userdata_temp, ignore_index=True)
         self.userdata.to_csv (self.userdata_path, index=False)
 
     def submit(self):
@@ -131,7 +145,7 @@ class MainWindow(QDialog):
             elif((self.ans2.isChecked ()) and (self.ans == 2)):
                 correct_choice = 1
 
-            self.userdata_temp=self.userdata_temp.append(pd.DataFrame ([[self.user, self.level, self.image1_path, self.image2_path, self.label1, self.label2, self.true_label, correct_choice, self.outputfile]], columns=['username', 'level', 'image1', 'image2', 'label1', 'label2', 'true_label', 'user_choice', 'session_video']), ignore_index=True, sort=False)
+            self.userdata_temp=self.userdata_temp.append(pd.DataFrame ([[self.user, self.level, self.image1_path, self.image2_path, self.label1, self.label2, self.true_label, correct_choice, self.outputfile]], columns=['username', 'level', 'image1', 'image2', 'label1', 'label2', 'true_label', 'user_choice', 'session_video']), ignore_index=True)
             
             
         if self.webcamEnabled == True:
@@ -189,13 +203,14 @@ class MainWindow(QDialog):
        
             if not os.path.exists(self.savedir):
                 os.makedirs(self.savedir)
-            fourcc = cv.VideoWriter_fourcc('X','V','I','D')
+            fourcc = cv.cv.CV_FOURCC('X','V','I','D')
+            #fourcc = cv.VideoWriter_fourcc('X','V','I','D')
             self.output_filename = time.strftime("%Y%m%d_%H%M%S")+ ".avi"
             self.outputfile = self.savedir+ "/" + self.output_filename
             self.out = cv.VideoWriter(self.outputfile, fourcc, 30.0, (640,480))
             self.capture = cv.VideoCapture(0)
-            self.capture.set(cv.CAP_PROP_FRAME_WIDTH, 640)
-            self.capture.set(cv.CAP_PROP_FRAME_HEIGHT, 480)
+            self.capture.set(cv.cv.CV_CAP_PROP_FRAME_WIDTH, 640)
+            self.capture.set(cv.cv.CV_CAP_PROP_FRAME_HEIGHT, 480)
             self.timer.start(16);
 
 
