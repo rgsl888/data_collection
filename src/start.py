@@ -43,7 +43,7 @@ class Login(QDialog):
         self.accept()
 
     def tryagain(self):
-        self.label, image = fd.face_recon()
+        self.label, self.image = fd.face_recon()
         self.userName.setText (self.label)
 
 

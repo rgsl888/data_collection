@@ -49,13 +49,13 @@ def get_margins(face_margin, margin=1):
 def face_recon():
     #video_capture = cv2.VideoCapture('/home/sachin/555.mp4')
     video_capture = cv2.VideoCapture(0)
-    for i in range (15):
+    while (1):
         if not video_capture.isOpened():
             sleep(5)
         # Capture frame-by-frame
         ret, frame = video_capture.read()
-        if (i == 14):
-            original_frame = frame.copy()
+        #if (i == 14):
+        original_frame = frame.copy()
         _, boundingboxes, features, emotion = mtcnn.process_image(frame)
 
         # placeholder for cropped faces
@@ -69,7 +69,7 @@ def face_recon():
             draw_label(frame, (x,y), label, emotion)
     
         cv2.imshow('Face Detection', frame)
-        if cv2.waitKey(5) == 27 :  # ESC key press
+        if cv2.waitKey(1) & 0xFF == ord('q'):  # ESC key press
             break
     # When everything is done, release the capture
     video_capture.release()

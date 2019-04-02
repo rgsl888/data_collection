@@ -587,8 +587,8 @@ def process_image(ip_img):
                     result = sess.run(probs, feed_dict={face_x: tensor})
                     print("debug", result, np.argmax(result[0]))
                     emotion = EMOTIONS[np.argmax(result[0])]
-        else:
-            print ("none detected")
+        #else:
+        #    print ("none detected")
     
     return alignedFaces, boundingboxes, features, emotion 
 
