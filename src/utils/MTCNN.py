@@ -8,7 +8,7 @@ import sys
 import re
 from scipy.misc import imresize
 import copy
-from model import predict, image_to_tensor, deepnn
+from utils.model import predict, image_to_tensor, deepnn
 import tensorflow as tf
 
 INFERENCE = True
@@ -534,7 +534,7 @@ def process_image(ip_img):
     # This part is needed by the DeepFace code
     x_ = [30.2946, 65.5318, 48.0252, 33.5493, 62.7299]
     y_ = [51.6963, 51.5014, 71.7366, 92.3655, 92.2041]
-    src = np.array( zip(x_, y_) ).astype(np.float32).reshape(1,5,2)
+    src = np.array( list(zip(x_, y_)) ).astype(np.float32).reshape(1,5,2)
     
     out = None
     emotion = ""
@@ -546,7 +546,7 @@ def process_image(ip_img):
         y = points[i][5:10]
     
         # Code for alginign the faces
-        dst = np.array( zip(x, y) ).astype(np.float32).reshape(1,5,2)
+        dst = np.array( list(zip(x, y)) ).astype(np.float32).reshape(1,5,2)
         transmat = cv2.estimateRigidTransform( dst, src, False )
 
         if(transmat is not None):

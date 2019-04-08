@@ -5,7 +5,7 @@ import os
 import glob
 import pickle
 import h5py
-import MTCNN as mtcnn
+import utils.MTCNN as mtcnn
 
 
 data_dump = {}
@@ -21,7 +21,7 @@ def generate_features():
         if features:
             data_dump[line[len(input_data_dir):-4]] = features[0]
         else:
-            print line
+            print (line)
             continue
     np.savez("../userdata/feature_file.npz", **data_dump) 
 

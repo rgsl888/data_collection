@@ -16,6 +16,7 @@ from PyQt5.QtMultimediaWidgets import QVideoWidget
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtWidgets import (QApplication, QFileDialog, QHBoxLayout, QLabel,
         QPushButton, QSizePolicy, QSlider, QStyle, QVBoxLayout, QWidget)
+from PyQt5.QtWebEngineWidgets import QWebEngineView
 
 import utils.FaceDetection as fd
 import utils.GenFeature as genfeat
@@ -58,37 +59,35 @@ class MainWindow(QDialog):
         self.user = username
         self.exitButton.clicked.connect(self.quit)
         self.webcamEnabled = False
-
-        self.easy_categories = [x for x in os.listdir('../data/easy/')]
-        self.hard_categories = [x for x in os.listdir('../data/hard/')]
+        self.data_path = "../data/"
+        self.math_easy = pd.read_csv (self.data_path+"MathEasy.csv"); 
+        self.math_med  = pd.read_csv (self.data_path+"MathMed.csv");
+        self.math_hard = pd.read_csv (self.data_path+"MathHard.csv");
         self.nextButton.clicked.connect(self.next)
         self.playback.clicked.connect(self.play)
         self.playback.setEnabled(False)
         self.easy.setStyleSheet('QRadioButton.indicator { width: 25px; height: 25px;};')
+        self.easy.setChecked(True)
         self.hard.setStyleSheet('QRadioButton.indicator { width: 25px; height: 25px;};')
         self.rand.setStyleSheet('QRadioButton.indicator { width: 25px; height: 25px;};')
-        self.ans1.setIconSize(QSize(461, 511))
-        self.ans2.setIconSize(QSize(461, 511))
-        self.ans1.setIcon(QIcon(QPixmap("../data/Images/sample1.png").scaled(461, 511, Qt.IgnoreAspectRatio, Qt.SmoothTransformation)))
-        self.ans2.setIcon(QIcon(QPixmap("../data/Images/sample2.png").scaled(461, 511, Qt.IgnoreAspectRatio, Qt.SmoothTransformation)))
-        #self.ans1.setIcon(QIcon(QPixmap("../data/Images/sample1.png").scaledToWidth(461)))
-        #self.ans2.setIcon(QIcon(QPixmap("../data/Images/sample2.png").scaledToWidth(461)))
+        self.a.setStyleSheet('QRadioButton.indicator { width: 25px; height: 25px;};')
+        self.b.setStyleSheet('QRadioButton.indicator { width: 25px; height: 25px;};')
+        self.c.setStyleSheet('QRadioButton.indicator { width: 25px; height: 25px;};')
+        self.d.setStyleSheet('QRadioButton.indicator { width: 25px; height: 25px;};')
+        self.e.setStyleSheet('QRadioButton.indicator { width: 25px; height: 25px;};')
         self.timer = QTimer(self)
-        #self.timer.timeout
-        self.timer.timeout.connect(self.updateFrame)
         self.userdata_path = "../userdata/data.csv"
+        self.timer.timeout.connect(self.updateFrame)
         if not os.path.exists(self.userdata_path): 
             self.userdata = pd.DataFrame(
                 {
-                    "username"  : [],
-                    "level"     : [],
-                    "image1"    : [],
-                    "image2"    : [],
-                    "label1"    : [],
-                    "label2"    : [],
-                    "true_label": [],
-                    "user_choice"   : [],
-                    "session_video" : []
+                    "username"       : [],
+                    "level"          : [],
+                    "question"       : [],
+                    "answer"         : [],
+                    "true_answer_opt": [],
+                    "user_choice"    : [],
+                    "session_video"  : []
 
                 }
             ) 
@@ -98,16 +97,13 @@ class MainWindow(QDialog):
 
         self.userdata_temp = pd.DataFrame(
             {
-                "username"  : [],
-                "level"     : [],
-                "image1"    : [],
-                "image2"    : [],
-                "label1"    : [], 
-                "label2"    : [], 
-                "true_label": [], 
-                "user_choice"   : [],
-                "session_video" : []
-                
+               "username"       : [],
+               "level"          : [],
+               "question"       : [],
+               "answer"         : [],
+               "true_answer_opt": [],
+               "user_choice"    : [],
+               "session_video"  : [] 
             }
         )
     
@@ -139,13 +135,18 @@ class MainWindow(QDialog):
         else:
             self.playback.setEnabled(True)
             correct_choice = 0
-            if ((self.ans1.isChecked ()) and (self.ans == 1)):
+            if ((self.a.isChecked ()) and (self.ans == 'A')):
                 correct_choice = 1
-                
-            elif((self.ans2.isChecked ()) and (self.ans == 2)):
+            elif((self.b.isChecked ()) and (self.ans == 'B')):
                 correct_choice = 1
-
-            self.userdata_temp=self.userdata_temp.append(pd.DataFrame ([[self.user, self.level, self.image1_path, self.image2_path, self.label1, self.label2, self.true_label, correct_choice, self.outputfile]], columns=['username', 'level', 'image1', 'image2', 'label1', 'label2', 'true_label', 'user_choice', 'session_video']), ignore_index=True)
+            elif((self.c.isChecked ()) and (self.ans == 'C')):
+                correct_choice = 1
+            elif((self.d.isChecked ()) and (self.ans == 'D')):
+                correct_choice = 1
+            elif((self.e.isChecked ()) and (self.ans == 'E')):
+                correct_choice = 1
+            
+            self.userdata_temp=self.userdata_temp.append(pd.DataFrame ([[self.user, self.level, self.sample['question'].values[0], self.sample['answer'].values[0], self.ans, correct_choice, self.outputfile]], columns=['username', 'level', 'question', 'answer', 'true_answer_opt', 'user_choice', 'session_video']), ignore_index=True)
             
             
         if self.webcamEnabled == True:
@@ -154,48 +155,25 @@ class MainWindow(QDialog):
         category = ''
         random_state = 2 #  0 - Easy, 1-Hard and 2-Disabled
         if (self.rand.isChecked()):
-            random_state = random.randint(0,1)
+            random_state = random.randint(0,2)
             
         if ((self.easy.isChecked()) or (random_state == 0)):
-            data_path = "../data/easy/"
+            self.data = self.math_easy
             self.level = 'E'
-            image_categories = random.sample(self.easy_categories, 2)
-        elif ((self.hard.isChecked()) or (random_state == 1)):
-            data_path = "../data/hard/"
+        elif ((self.med.isChecked()) or (random_state == 1)):
+            self.data = self.math_med
+            self.level = 'M'
+        elif ((self.hard.isChecked()) or (random_state == 2)):
+            self.data = self.math_hard
             self.level = 'H'
-            main_category = random.sample(self.hard_categories, 1)
-            category = main_category[0]
-            sub_categories = [x for x in os.listdir(data_path+main_category[0]+'/')]
-            image_categories = random.sample(sub_categories, 2)
 
-        image1_name = random.sample(os.listdir(data_path+category+'/'+image_categories[0]), 1)
-        image2_name = random.sample(os.listdir(data_path+category+'/'+image_categories[1]), 1)
+        self.sample = self.data.sample(n=1)
+        self.data.drop(index=self.sample.index[0], inplace=True)
 
-        self.image1_path = data_path+category+'/'+image_categories[0]+'/'+image1_name[0] 
-        self.image2_path = data_path+category+'/'+image_categories[1]+'/'+image2_name[0]
-        image1 = QPixmap(self.image1_path)
-        image2 = QPixmap(self.image2_path)
-        self.ans1.setIcon(QIcon(QPixmap(self.image1_path).scaled(QSize(461, 511), Qt.IgnoreAspectRatio, Qt.SmoothTransformation)))
-        self.ans2.setIcon(QIcon(QPixmap(self.image2_path).scaled(QSize(461, 511), Qt.IgnoreAspectRatio, Qt.SmoothTransformation)))
-        #self.ans1.setIcon(QIcon(QPixmap(self.image1_path).scaledToWidth(461)))
-        #self.ans2.setIcon(QIcon(QPixmap(self.image2_path).scaledToWidth(461)))
-        #self.ans1.setStyleSheet('QRadioButton.indicator { width: 461px; height: 511px;};')
-        #self.ans2.setStyleSheet('QRadioButton.indicator { width: 461px; height: 511px;};')
-       
-        #self.ans1.setStyleSheet("background-image: url("+ self.image1_path  +");")
-        #self.ans2.setStyleSheet("background-image: url("+ self.image2_path  +");")
-
-        self.label1 = image_categories[0][10:].replace('-',' ')
-        self.label2 = image_categories[1][10:].replace('-',' ')
-
-        if random.randint(0,1):
-            self.label.setText("LABEL : " + self.label1)
-            self.ans = 1;
-            self.true_label = self.label1
-        else:
-            self.label.setText("LABEL : " + self.label2)
-            self.ans = 2;
-            self.true_label = self.label2
+        self.view = QWebEngineView()
+        self.view.setHtml(str(self.sample['question'].values[0]), QUrl.fromLocalFile(os.getcwd()+"/../data/"))
+        self.web.setWidget(self.view)
+        self.ans = self.sample['answer_opt'].values[0] 
 
         if self.webcamEnabled == False:
             self.webcamEnabled = True
@@ -203,14 +181,14 @@ class MainWindow(QDialog):
        
             if not os.path.exists(self.savedir):
                 os.makedirs(self.savedir)
-            fourcc = cv.cv.CV_FOURCC('X','V','I','D')
-            #fourcc = cv.VideoWriter_fourcc('X','V','I','D')
+            #fourcc = cv.cv.CV_FOURCC('X','V','I','D')
+            fourcc = cv.VideoWriter_fourcc('X','V','I','D')
             self.output_filename = time.strftime("%Y%m%d_%H%M%S")+ ".avi"
             self.outputfile = self.savedir+ "/" + self.output_filename
             self.out = cv.VideoWriter(self.outputfile, fourcc, 30.0, (640,480))
             self.capture = cv.VideoCapture(0)
-            self.capture.set(cv.cv.CV_CAP_PROP_FRAME_WIDTH, 640)
-            self.capture.set(cv.cv.CV_CAP_PROP_FRAME_HEIGHT, 480)
+            self.capture.set(cv.CAP_PROP_FRAME_WIDTH, 640)
+            self.capture.set(cv.CAP_PROP_FRAME_HEIGHT, 480)
             self.timer.start(16);
 
 
@@ -292,17 +270,22 @@ class PlayBackWindow(QDialog):
             QMessageBox.information(self, 'Info', "All the sessions has been already shown, please exit", QMessageBox.Ok)
         else: 
             self.mediaPlayer.setMedia(QMediaContent(QUrl.fromLocalFile(QFileInfo(self.userdata['session_video'][self.count]).absoluteFilePath())))
-            image1 = QPixmap(self.userdata['image1'][self.count])
-            image2 = QPixmap(self.userdata['image2'][self.count])
-            self.pic1.setPixmap(image1)
-            self.pic2.setPixmap(image2)
-            self.label1.setText(self.userdata['label1'][self.count])
-            self.label2.setText(self.userdata['label2'][self.count])
-            self.trueLabel.setText('Label Provided: ' + self.userdata['true_label'][self.count])
+            
             if (self.userdata['level'][self.count] == 'E'):
                 lvl = 'Easy'
+            elif (self.userdata['level'][self.count] == 'M'):
+                lvl = 'Medium'
             else:
                 lvl = 'Hard'
+          
+            self.q_view = QWebEngineView()
+            self.q_view.setHtml(str(self.userdata['question'][self.count]), QUrl.fromLocalFile(os.getcwd()+"/../data/"))
+            self.question.setWidget(self.q_view)
+            
+            self.a_view = QWebEngineView()
+            self.a_view.setHtml(str(self.userdata['answer'][self.count]), QUrl.fromLocalFile(os.getcwd()+"/../data/"))
+            self.true_ans.setWidget(self.a_view)
+
             self.level.setText('Level: ' + lvl)
             if (self.userdata['user_choice'][self.count] == 0):
                 ans = 'Wrong'
