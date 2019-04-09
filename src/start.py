@@ -63,6 +63,21 @@ class MainWindow(QDialog):
         self.math_easy = pd.read_csv (self.data_path+"MathEasy.csv"); 
         self.math_med  = pd.read_csv (self.data_path+"MathMed.csv");
         self.math_hard = pd.read_csv (self.data_path+"MathHard.csv");
+        self.sci_easy = pd.read_csv (self.data_path+"SciEasy.csv"); 
+        self.sci_med  = pd.read_csv (self.data_path+"SciMed.csv");
+        self.sci_hard = pd.read_csv (self.data_path+"SciHard.csv");
+        self.geo_easy = pd.read_csv (self.data_path+"GeoGraphyEasy.csv"); 
+        self.geo_med  = pd.read_csv (self.data_path+"GeoGraphyMed.csv");
+        self.geo_hard = pd.read_csv (self.data_path+"GeoGraphyHard.csv");
+        self.hist_easy = pd.read_csv (self.data_path+"HistEasy.csv"); 
+        self.hist_med  = pd.read_csv (self.data_path+"HistMed.csv");
+        self.hist_hard = pd.read_csv (self.data_path+"HistHard.csv");
+        self.eco_easy = pd.read_csv (self.data_path+"EconomicsEasy.csv"); 
+        self.eco_med  = pd.read_csv (self.data_path+"EconomicsMed.csv");
+        self.eco_hard = pd.read_csv (self.data_path+"EconomicsHard.csv");
+        self.read_easy = pd.read_csv (self.data_path+"ReadEasy.csv"); 
+        self.read_med  = pd.read_csv (self.data_path+"ReadMed.csv");
+        self.read_hard = pd.read_csv (self.data_path+"ReadHard.csv");
         self.nextButton.clicked.connect(self.next)
         self.playback.clicked.connect(self.play)
         self.playback.setEnabled(False)
@@ -75,6 +90,14 @@ class MainWindow(QDialog):
         self.c.setStyleSheet('QRadioButton.indicator { width: 25px; height: 25px;};')
         self.d.setStyleSheet('QRadioButton.indicator { width: 25px; height: 25px;};')
         self.e.setStyleSheet('QRadioButton.indicator { width: 25px; height: 25px;};')
+        self.math.setStyleSheet('QRadioButton.indicator { width: 25px; height: 25px;};')
+        self.math.setChecked(True)
+        self.sci.setStyleSheet('QRadioButton.indicator { width: 25px; height: 25px;};')
+        self.geo.setStyleSheet('QRadioButton.indicator { width: 25px; height: 25px;};')
+        self.hist.setStyleSheet('QRadioButton.indicator { width: 25px; height: 25px;};')
+        self.eco.setStyleSheet('QRadioButton.indicator { width: 25px; height: 25px;};')
+        self.read.setStyleSheet('QRadioButton.indicator { width: 25px; height: 25px;};')
+
         self.timer = QTimer(self)
         self.userdata_path = "../userdata/data.csv"
         self.timer.timeout.connect(self.updateFrame)
@@ -83,6 +106,7 @@ class MainWindow(QDialog):
                 {
                     "username"       : [],
                     "level"          : [],
+                    "type"           : [],
                     "question"       : [],
                     "answer"         : [],
                     "true_answer_opt": [],
@@ -99,6 +123,7 @@ class MainWindow(QDialog):
             {
                "username"       : [],
                "level"          : [],
+               "type"           : [],
                "question"       : [],
                "answer"         : [],
                "true_answer_opt": [],
@@ -146,7 +171,7 @@ class MainWindow(QDialog):
             elif((self.e.isChecked ()) and (self.ans == 'E')):
                 correct_choice = 1
             
-            self.userdata_temp=self.userdata_temp.append(pd.DataFrame ([[self.user, self.level, self.sample['question'].values[0], self.sample['answer'].values[0], self.ans, correct_choice, self.outputfile]], columns=['username', 'level', 'question', 'answer', 'true_answer_opt', 'user_choice', 'session_video']), ignore_index=True)
+            self.userdata_temp=self.userdata_temp.append(pd.DataFrame ([[self.user, self.level, self.type, self.sample['question'].values[0], self.sample['answer'].values[0], self.ans, correct_choice, self.outputfile]], columns=['username', 'level', 'type', 'question', 'answer', 'true_answer_opt', 'user_choice', 'session_video']), ignore_index=True)
             
             
         if self.webcamEnabled == True:
@@ -154,24 +179,59 @@ class MainWindow(QDialog):
         self.nextButton.setText("Next")
         category = ''
         random_state = 2 #  0 - Easy, 1-Hard and 2-Disabled
+        random_topic = 5 #  0 - Math, 1-Science, 2-GeoGraphy, 3-History, 4-Economics, 5-Reading
+        if (self.rand_topic.isChecked()):
+            random_topic = random.randint(0,5)
+
         if (self.rand.isChecked()):
             random_state = random.randint(0,2)
-            
+    
+        if (self.math.isChecked() or (random_topic == 0)):
+            self.dataeasy = self.math_easy
+            self.datamed = self.math_med
+            self.datahard = self.math_hard
+            self.type = "Math"
+        elif (self.sci.isChecked() or (random_topic == 1)):
+            self.dataeasy = self.sci_easy
+            self.datamed = self.sci_med
+            self.datahard = self.sci_hard
+            self.type = "Science"
+        elif (self.geo.isChecked() or (random_topic == 2)):
+            self.dataeasy = self.geo_easy
+            self.datamed = self.geo_med
+            self.datahard = self.geo_hard
+            self.type = "GeoGraphy"
+        elif (self.hist.isChecked() or (random_topic == 3)):
+            self.dataeasy = self.hist_easy
+            self.datamed = self.hist_med
+            self.datahard = self.hist_hard
+            self.type = "History"
+        elif (self.eco.isChecked() or (random_topic == 4)):
+            self.dataeasy = self.eco_easy
+            self.datamed = self.eco_med
+            self.datahard = self.eco_hard
+            self.type = "Economics"
+        elif (self.read.isChecked() or (random_topic == 5)):
+            self.dataeasy = self.read_easy
+            self.datamed = self.read_med
+            self.datahard = self.read_hard
+            self.type = "Reading"
+
         if ((self.easy.isChecked()) or (random_state == 0)):
-            self.data = self.math_easy
+            self.data = self.dataeasy
             self.level = 'E'
         elif ((self.med.isChecked()) or (random_state == 1)):
-            self.data = self.math_med
+            self.data = self.datamed
             self.level = 'M'
         elif ((self.hard.isChecked()) or (random_state == 2)):
-            self.data = self.math_hard
+            self.data = self.datahard
             self.level = 'H'
 
         self.sample = self.data.sample(n=1)
         self.data.drop(index=self.sample.index[0], inplace=True)
 
         self.view = QWebEngineView()
-        self.view.setHtml(str(self.sample['question'].values[0]), QUrl.fromLocalFile(os.getcwd()+"/../data/"))
+        self.view.setHtml(str(self.sample['question'].values[0]), QUrl.fromLocalFile(os.getcwd()+"/../data/html/"))
         self.web.setWidget(self.view)
         self.ans = self.sample['answer_opt'].values[0] 
 
@@ -279,14 +339,15 @@ class PlayBackWindow(QDialog):
                 lvl = 'Hard'
           
             self.q_view = QWebEngineView()
-            self.q_view.setHtml(str(self.userdata['question'][self.count]), QUrl.fromLocalFile(os.getcwd()+"/../data/"))
+            self.q_view.setHtml(str(self.userdata['question'][self.count]), QUrl.fromLocalFile(os.getcwd()+"/../data/html/"))
             self.question.setWidget(self.q_view)
             
             self.a_view = QWebEngineView()
-            self.a_view.setHtml(str(self.userdata['answer'][self.count]), QUrl.fromLocalFile(os.getcwd()+"/../data/"))
+            self.a_view.setHtml(str(self.userdata['answer'][self.count]), QUrl.fromLocalFile(os.getcwd()+"/../data/html/"))
             self.true_ans.setWidget(self.a_view)
 
             self.level.setText('Level: ' + lvl)
+            self.topic.setText('Topic: ' + self.userdata['type'][self.count])
             if (self.userdata['user_choice'][self.count] == 0):
                 ans = 'Wrong'
             else:

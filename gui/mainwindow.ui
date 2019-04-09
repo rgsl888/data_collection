@@ -13,34 +13,10 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>400</x>
-     <y>40</y>
-     <width>411</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>15</pointsize>
-    </font>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-  </widget>
   <widget class="QRadioButton" name="easy">
    <property name="geometry">
     <rect>
-     <x>320</x>
+     <x>340</x>
      <y>90</y>
      <width>100</width>
      <height>21</height>
@@ -67,7 +43,7 @@
   <widget class="QRadioButton" name="hard">
    <property name="geometry">
     <rect>
-     <x>610</x>
+     <x>630</x>
      <y>90</y>
      <width>100</width>
      <height>21</height>
@@ -88,7 +64,7 @@
   <widget class="QRadioButton" name="rand">
    <property name="geometry">
     <rect>
-     <x>750</x>
+     <x>770</x>
      <y>90</y>
      <width>100</width>
      <height>21</height>
@@ -109,8 +85,8 @@
   <widget class="QPushButton" name="nextButton">
    <property name="geometry">
     <rect>
-     <x>480</x>
-     <y>910</y>
+     <x>500</x>
+     <y>890</y>
      <width>200</width>
      <height>50</height>
     </rect>
@@ -133,8 +109,8 @@
   <widget class="QPushButton" name="playback">
    <property name="geometry">
     <rect>
-     <x>350</x>
-     <y>970</y>
+     <x>370</x>
+     <y>950</y>
      <width>150</width>
      <height>40</height>
     </rect>
@@ -151,8 +127,8 @@
   <widget class="QPushButton" name="exitButton">
    <property name="geometry">
     <rect>
-     <x>660</x>
-     <y>970</y>
+     <x>680</x>
+     <y>950</y>
      <width>150</width>
      <height>40</height>
     </rect>
@@ -187,7 +163,7 @@
   <widget class="QScrollArea" name="web">
    <property name="geometry">
     <rect>
-     <x>70</x>
+     <x>90</x>
      <y>160</y>
      <width>1021</width>
      <height>651</height>
@@ -210,7 +186,7 @@
   <widget class="QRadioButton" name="a">
    <property name="geometry">
     <rect>
-     <x>140</x>
+     <x>160</x>
      <y>830</y>
      <width>116</width>
      <height>22</height>
@@ -232,7 +208,7 @@
   <widget class="QRadioButton" name="b">
    <property name="geometry">
     <rect>
-     <x>360</x>
+     <x>380</x>
      <y>830</y>
      <width>116</width>
      <height>22</height>
@@ -248,7 +224,7 @@
   <widget class="QRadioButton" name="c">
    <property name="geometry">
     <rect>
-     <x>560</x>
+     <x>580</x>
      <y>830</y>
      <width>116</width>
      <height>22</height>
@@ -264,7 +240,7 @@
   <widget class="QRadioButton" name="d">
    <property name="geometry">
     <rect>
-     <x>760</x>
+     <x>780</x>
      <y>830</y>
      <width>116</width>
      <height>22</height>
@@ -280,7 +256,7 @@
   <widget class="QRadioButton" name="e">
    <property name="geometry">
     <rect>
-     <x>970</x>
+     <x>990</x>
      <y>830</y>
      <width>116</width>
      <height>22</height>
@@ -308,7 +284,7 @@
   <widget class="QRadioButton" name="med">
    <property name="geometry">
     <rect>
-     <x>460</x>
+     <x>480</x>
      <y>90</y>
      <width>100</width>
      <height>21</height>
@@ -332,10 +308,123 @@
     <bool>false</bool>
    </property>
   </widget>
+  <widget class="QRadioButton" name="math">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>50</y>
+     <width>116</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Math</string>
+   </property>
+   <attribute name="buttonGroup">
+    <string notr="true">buttonGroup_2</string>
+   </attribute>
+  </widget>
+  <widget class="QRadioButton" name="sci">
+   <property name="geometry">
+    <rect>
+     <x>220</x>
+     <y>50</y>
+     <width>116</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Science</string>
+   </property>
+   <attribute name="buttonGroup">
+    <string notr="true">buttonGroup_2</string>
+   </attribute>
+  </widget>
+  <widget class="QRadioButton" name="geo">
+   <property name="geometry">
+    <rect>
+     <x>380</x>
+     <y>50</y>
+     <width>116</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Geography</string>
+   </property>
+   <attribute name="buttonGroup">
+    <string notr="true">buttonGroup_2</string>
+   </attribute>
+  </widget>
+  <widget class="QRadioButton" name="hist">
+   <property name="geometry">
+    <rect>
+     <x>550</x>
+     <y>50</y>
+     <width>116</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>History</string>
+   </property>
+   <attribute name="buttonGroup">
+    <string notr="true">buttonGroup_2</string>
+   </attribute>
+  </widget>
+  <widget class="QRadioButton" name="read">
+   <property name="geometry">
+    <rect>
+     <x>850</x>
+     <y>50</y>
+     <width>116</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Reading</string>
+   </property>
+   <attribute name="buttonGroup">
+    <string notr="true">buttonGroup_2</string>
+   </attribute>
+  </widget>
+  <widget class="QRadioButton" name="rand_topic">
+   <property name="geometry">
+    <rect>
+     <x>1000</x>
+     <y>50</y>
+     <width>116</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Random</string>
+   </property>
+   <attribute name="buttonGroup">
+    <string notr="true">buttonGroup_2</string>
+   </attribute>
+  </widget>
+  <widget class="QRadioButton" name="eco">
+   <property name="geometry">
+    <rect>
+     <x>700</x>
+     <y>50</y>
+     <width>116</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Economics</string>
+   </property>
+   <attribute name="buttonGroup">
+    <string notr="true">buttonGroup_2</string>
+   </attribute>
+  </widget>
  </widget>
  <resources/>
  <connections/>
  <buttongroups>
+  <buttongroup name="buttonGroup_2"/>
   <buttongroup name="buttonGroup"/>
  </buttongroups>
 </ui>

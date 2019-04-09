@@ -92,7 +92,7 @@
    <property name="geometry">
     <rect>
      <x>640</x>
-     <y>330</y>
+     <y>360</y>
      <width>200</width>
      <height>25</height>
     </rect>
@@ -154,6 +154,27 @@
      </rect>
     </property>
    </widget>
+  </widget>
+  <widget class="QLabel" name="topic">
+   <property name="geometry">
+    <rect>
+     <x>640</x>
+     <y>320</y>
+     <width>200</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+     <weight>75</weight>
+     <italic>true</italic>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Topic</string>
+   </property>
   </widget>
  </widget>
  <resources/>
