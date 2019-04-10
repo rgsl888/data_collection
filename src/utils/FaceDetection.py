@@ -9,7 +9,7 @@ import scipy
 
 feature_file = np.load("../userdata/feature_file.npz")
 UNKNOWN_LABEL = "Unknown"
-THRESHOLD = 0.75
+THRESHOLD = 0.5
 
 def draw_label(image, point, label, emotion, font=cv2.FONT_HERSHEY_SIMPLEX,
                    font_scale=1, thickness=2):
