@@ -20,6 +20,7 @@ from PyQt5.QtWebEngineWidgets import QWebEngineView
 
 import utils.FaceDetection as fd
 import utils.GenFeature as genfeat
+import utils.fer.inference as infer
 
 userName = ""
 option = ""
@@ -260,6 +261,9 @@ class PlayBackWindow(QDialog):
         super(PlayBackWindow, self).__init__()
         loadUi('../gui/playback.ui', self)
         self.setWindowTitle("Playback")
+        self.currentsession = userdata
+        sess = pd.read_csv ("../userdata/data.csv");
+        self.allsessions = sess[sess['username']==userName].reset_index()
         self.userdata = userdata
         self.mediaPlayer = QMediaPlayer(None, QMediaPlayer.VideoSurface)
         videoWidget = QVideoWidget()
@@ -300,11 +304,21 @@ class PlayBackWindow(QDialog):
         #fileName = "../userdata/videos/rgsl888/20190308_184703.avi"
         #self.mediaPlayer.setMedia( QMediaContent(QUrl.fromLocalFile(QFileInfo(fileName).absoluteFilePath())))
         self.nextButton.setText("Start")
+        self.allses.setText("For All-Session")
         self.nextButton.clicked.connect(self.next)
+        self.allses.clicked.connect(self.showAllsession)
+        self.fer.clicked.connect(self.showFER)
         self.exitButton.clicked.connect(self.exitCall)
-        self.count = 0
+        self.allses.setEnabled(False)
+        self.fer.setEnabled(False)
+        self.count = -1
+        self.showAll = False
 
     def next(self):
+        cv.destroyAllWindows()
+        self.fer.setEnabled(True)
+        self.allses.setEnabled(True)
+        self.count = self.count + 1
         self.nextButton.setText("Next")
         if (self.userdata.shape[0] <= self.count):
             QMessageBox.information(self, 'Info', "All the sessions has been already shown, please exit", QMessageBox.Ok)
@@ -327,7 +341,24 @@ class PlayBackWindow(QDialog):
             else:
                 ans = 'Correct'
             self.answer.setText('User choice: ' + ans)
-            self.count = self.count + 1
+
+    def showAllsession (self):
+        if (self.showAll == True):
+            self.showAll = False
+            self.userdata = self.currentsession
+            self.count = -1
+            self.allses.setText("For All-Session")
+        else:
+            self.showAll = True
+            self.userdata = self.allsessions
+            self.count = -1
+            self.allses.setText("For Current-Session")
+
+        self.next()
+
+    def showFER (self):
+        infer.inference (self.userdata['session_video'][self.count])
+        
 
     def exitCall(self):
         result = QMessageBox.question(self, 'Message', "Are you sure?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
@@ -593,6 +624,9 @@ class PlayBackWindow_question(QDialog):
         super(PlayBackWindow_question, self).__init__()
         loadUi('../gui/playback_q.ui', self)
         self.setWindowTitle("Playback")
+        self.currentsession = userdata
+        sess = pd.read_csv ("../userdata/data_q.csv");
+        self.allsessions = sess[sess['username']==userName].reset_index()
         self.userdata = userdata
         self.mediaPlayer = QMediaPlayer(None, QMediaPlayer.VideoSurface)
         videoWidget = QVideoWidget()
@@ -634,10 +668,20 @@ class PlayBackWindow_question(QDialog):
         #self.mediaPlayer.setMedia( QMediaContent(QUrl.fromLocalFile(QFileInfo(fileName).absoluteFilePath())))
         self.nextButton.setText("Start")
         self.nextButton.clicked.connect(self.next)
+        self.fer.clicked.connect(self.showFER)
         self.exitButton.clicked.connect(self.exitCall)
-        self.count = 0
+        self.fer.setEnabled(False)
+        self.count = -1
+        self.allses.setText("For All-Session")
+        self.allses.clicked.connect(self.showAllsession)
+        self.allses.setEnabled(False)
+        self.showAll = False
        
     def next(self):
+        cv.destroyAllWindows()
+        self.fer.setEnabled(True)
+        self.allses.setEnabled(True)
+        self.count = self.count + 1 
         self.nextButton.setText("Next")
         if (self.userdata.shape[0] <= self.count):
             QMessageBox.information(self, 'Info', "All the sessions has been already shown, please exit", QMessageBox.Ok)
@@ -666,7 +710,23 @@ class PlayBackWindow_question(QDialog):
             else:
                 ans = 'Correct'
             self.answer.setText('User choice: ' + ans)
-            self.count = self.count + 1 
+    
+    def showAllsession (self):
+        if (self.showAll == True):
+            self.showAll = False
+            self.userdata = self.currentsession
+            self.count = -1
+            self.allses.setText("For All-Session")
+        else:
+            self.showAll = True
+            self.userdata = self.allsessions
+            self.count = -1
+            self.allses.setText("For Current-Session")
+
+        self.next()
+    
+    def showFER (self):
+        infer.inference (self.userdata['session_video'][self.count])
         
     def exitCall(self):
         result = QMessageBox.question(self, 'Message', "Are you sure?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
